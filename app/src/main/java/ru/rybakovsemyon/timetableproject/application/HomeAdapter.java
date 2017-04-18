@@ -57,7 +57,7 @@ class HomeAdapter extends BaseAdapter {
         TextView tType = (TextView) view.findViewById(R.id.text_type);
         TextView tSubject = (TextView)view.findViewById(R.id.text_lesson); //
         TextView tPlace = (TextView)view.findViewById(R.id.text_place); //
-        String[] tags = new String[13];
+        String[] tags = new String[14];
         switch (type){
             case "auditory":
                 tags[0] = nameSchedule;
@@ -95,6 +95,7 @@ class HomeAdapter extends BaseAdapter {
         tags[10] = l.getType();
         tags[11] = l.getDateStartString();
         tags[12] = l.getDateEndString();
+        tags[13] = String.valueOf(l.getTemp_id());
         switch (tags[10]){
             case "0": //practic
                 tags[10] = "Практика";

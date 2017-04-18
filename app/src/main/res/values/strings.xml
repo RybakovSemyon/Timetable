@@ -46,10 +46,14 @@
     <string name="nav_myschedule">Сохранённые</string>
     <string name="info_manager2">Сохранённые расписания</string>
     <string name="add_schedule">Добавить расписание</string>
-    <string name="delete_schedule">Удалить выбранное расписание</string>
-    <string name="important_schedule">Сделать выбранное расписание основным</string>
+    <string name="delete_schedule">Удалить</string>
+    <string name="delete">Удаление</string>
+    <string name="delete_tittle">Вы точно хотите удалить\n выбранный элемент?</string>
+    <string name="delete_not">Что бы удалять элементы расписания\n сначала необходимо его сохранить</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="important_schedule">Сделать основным</string>
     <string name="info_manager1">У вас нет сохранённых расписаний\nНажмите на кнопку\n<b>\"Добавить расписание\"</b></string>
-    <string name="info_manager3">Выберите основное расписание</string>
     <string-array name="timesStart">
         <item>08:45</item>
         <item>10:35</item>

@@ -5,28 +5,28 @@
             <solid
                 android:color="@color/light_blue" />
             <stroke
-                android:width="3dp"
-                android:color="@color/font_end" />
+                android:width="4dp"
+                android:color="@color/colorPrimary" />
             <corners
-                android:radius="10dp" />
-            <!--<padding-->
-                <!--android:left="5dp"-->
-                <!--android:top="5dp"-->
-                <!--android:right="5dp"-->
-                <!--android:bottom="5dp" />-->
+                android:radius="8dp" />
+            <padding
+                android:left="5dp"
+                android:top="5dp"
+                android:right="5dp"
+                android:bottom="5dp" />
         </shape>
     </item>
     <item>
         <shape>
             <gradient
-                android:startColor="@color/background_items"
-                android:endColor="@color/white"
+                android:startColor="@color/font_end"
+                android:endColor="@color/font_end"
                 android:angle="270" />
             <stroke
-                android:width="1dp"
-                android:color="@color/back_fone" />
+                android:width="0dp"
+                android:color="@color/black" />
             <corners
-                android:radius="10dp" />
+                android:radius="8dp" />
             <!--<padding-->
                 <!--android:left="5dp"-->
                 <!--android:top="5dp"-->

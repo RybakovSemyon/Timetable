@@ -29,6 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity
     ArrayList<Integer> itemsID = new ArrayList<>();
     ArrayList<String> itemsTYPE = new ArrayList<>();
     ArrayList<String> itemsNAME = new ArrayList<>();
+    static final private int CHOOSE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +102,16 @@ public class HomeActivity extends AppCompatActivity
                     startActivity(intent);
                     finish();
                 }
-                db_id = all.get(0).getId();
-                type = all.get(0).type;
-                nameSchedule = all.get(0).name;
+                int i = 0;
+                while (i < all.size()){
+                    if(all.get(i).important == 1){
+                        db_id = all.get(i).getId();
+                        type = all.get(i).type;
+                        nameSchedule = all.get(i).name;
+                        break;
+                    }
+                    i++;
+                }
             } else {
                 db_id = Long.parseLong(temp);
             }
@@ -257,12 +266,16 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), ChooseActivity.class));
                 finish();
             } else {
-                long _id = all.get(0).getId();
-                String _type =  all.get(0).type;
-                String _name = all.get(0).name;
-                db_id = _id;
-                nameSchedule = _name;
-                type = _type;
+                int i = 0;
+                while (i < all.size()){
+                    if(all.get(i).important == 1){
+                        db_id = all.get(i).getId();
+                        type = all.get(i).type;
+                        nameSchedule = all.get(i).name;
+                        break;
+                    }
+                    i++;
+                }
                 DrawingTimetable(1);
             }
         } else if (id == R.id.nav_schedules){
@@ -284,6 +297,7 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+
     //-----------! Fragment
     public static class PlaceholderFragment extends Fragment {
 
@@ -301,7 +315,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home, container, false);
             int position = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
@@ -366,6 +380,18 @@ public class HomeActivity extends AppCompatActivity
                             startActivity(intent);
                         }
                     });
+                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                            TextView tPlace = (TextView)view.findViewById(R.id.text_place); //
+                            //вытащим данные из элемента, которые засунули в тэг одного из textView
+                            String[] info = (String[]) tPlace.getTag();
+                            Intent intent = new Intent(getActivity(), DeleteActivity.class);
+                            intent.putExtra("_id", info[13]);
+                            startActivityForResult(intent, CHOOSE);
+                            return true;
+                        }
+                    });
                 }
             }
             Button add_element = (Button) rootView.findViewById(R.id.add_element);
@@ -394,6 +420,18 @@ public class HomeActivity extends AppCompatActivity
             }
             return rootView;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            String answer = data.getStringExtra("db_id");
+            long _id = Long.parseLong(answer);
+            new Delete().from(DLesson.class).where("Id = ?", _id).execute();
+            DrawingTimetable(1);
+        }
+
     }
 
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
@@ -853,4 +891,5 @@ public class HomeActivity extends AppCompatActivity
         }
         return   7 - (8 - c.get(GregorianCalendar.DAY_OF_WEEK))%7;
     }
+
 }

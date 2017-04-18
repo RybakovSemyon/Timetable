@@ -8,6 +8,8 @@
     <color name="font_dark">#007DE0</color>
     <color name="font_center">#2EB7FF</color>
     <color name="font_end">#99DCFF</color>
+    <color name="btn_imp">#42FF29</color>
+    <color name="btn_del">#FF2929</color>
     <color name="back_fone">#bcb9b9</color>
     <color name="white">#ffffff</color>
     <color name="back_fone_element">#ffffff</color>

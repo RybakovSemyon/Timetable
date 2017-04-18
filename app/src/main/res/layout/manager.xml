@@ -42,35 +42,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/layout_manager1"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/background_items"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_manager2" />
-
-    <TextView
-        android:id="@+id/info_manager3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/info_manager3"
-        android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_manager1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
-
     <Button
         android:id="@+id/aschedule"
         android:layout_width="wrap_content"
@@ -86,27 +57,49 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:id="@+id/btn_important"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="@string/important_schedule"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/manager_group" />
 
-    <Button
-        android:id="@+id/btn_delete"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:text="@string/delete_schedule"
-        android:textSize="12sp"
-        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_important" />
+        app:layout_constraintTop_toBottomOf="@+id/manager_group"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_important"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_important_selector"
+            android:text="@string/important_schedule"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_delete_selector"
+            android:text="@string/delete_schedule"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </LinearLayout>
 
     <RadioGroup
         android:id="@+id/manager_group"
@@ -116,6 +109,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/manager_style"
         android:maxHeight="200dp"
         android:padding="10dp"
@@ -123,7 +117,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_manager3">
+        app:layout_constraintTop_toBottomOf="@+id/info_manager2">
 
     </RadioGroup>
 

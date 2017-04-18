@@ -1,8 +1,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:thickness="0dp"
     android:shape="rectangle">
-    <stroke android:width="3dp"
-        android:color="@color/light_blue"/>
+    <stroke android:width="2dp"
+        android:color="@color/back_fone"/>
     <corners android:radius="10dp" />
 
     <!--<gradient-->

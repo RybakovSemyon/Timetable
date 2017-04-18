@@ -43,10 +43,6 @@ public class ManagerActivity extends AppCompatActivity {
             info_manager1.setVisibility(View.GONE);
             TextView info_manager2 = (TextView) findViewById(R.id.info_manager2);
             info_manager2.setVisibility(View.VISIBLE);
-            TextView info_manager3 = (TextView) findViewById(R.id.info_manager3);
-            info_manager3.setVisibility(View.VISIBLE);
-            LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.layout_manager1);
-            linearLayout1.setVisibility(View.VISIBLE);
             for (int i = 0; i < all.size(); i++){
                 radioButton = new RadioButton(this);
                 String type = null;
@@ -66,6 +62,7 @@ public class ManagerActivity extends AppCompatActivity {
                 if (all.get(i).important == 1){
                     tag[0] = "1";
                     String label = "Основное: " + all.get(i).name +" " + type;
+                    radioButton.setTextColor(getResources().getColor(R.color.light_blue));
                     if (actionBar != null) {
                         actionBar.setTitle(label);
                     }
@@ -122,7 +119,36 @@ public class ManagerActivity extends AppCompatActivity {
         btn_important.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+                System.out.println(checkedRadioButtonId);
+                if (checkedRadioButtonId == -1){
+                    Toast toast = Toast.makeText(getApplicationContext(), "Выберите расписание", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    RadioButton myRadioButton = (RadioButton) findViewById(checkedRadioButtonId);
+                    System.out.println(myRadioButton.getTag().toString() + " "+ myRadioButton.getText());
+                    String[] info = (String[]) myRadioButton.getTag();
+                    long _id = Long.parseLong(info[1]);
+                    System.out.println(_id);
+                    if (info[0] == "1"){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Оно и так основное", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        List<DTimetable> all = new Select().from(DTimetable.class).execute();
+                        if (all.size() !=0){
+                            for (int i = 0; i < all.size(); i++){
+                                new Update(DTimetable.class).set("Important = 0").where("Id = ?", all.get(i).getId()).execute();
+                            }
+                            new Update(DTimetable.class).set("Important = 1").where("Id = ?", _id).execute();
+                        }
+                        Toast toast = Toast.makeText(getApplicationContext(), "Сделано :-)", Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent intent = new Intent(ManagerActivity.this, ManagerActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
+                }
             }
         });
     }

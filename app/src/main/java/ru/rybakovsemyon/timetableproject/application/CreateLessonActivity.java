@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import ru.rybakovsemyon.timetableproject.R;
 
 public class CreateLessonActivity extends AppCompatActivity {
 
+    private int count = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +121,18 @@ public class CreateLessonActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        count++;
+        if (count == 1){
+            Toast toast = Toast.makeText(getApplicationContext(), "Нажмите еще раз, что бы\nвыйти и не сохранить изменения", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            super.onBackPressed();
+        }
 
     }
 

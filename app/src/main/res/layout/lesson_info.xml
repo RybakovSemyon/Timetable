@@ -61,7 +61,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:background="@drawable/item_home_style"
+        android:background="@drawable/item_home_selector"
         android:orientation="vertical"
         android:padding="8dp"
         app:layout_constraintHorizontal_bias="0.0"

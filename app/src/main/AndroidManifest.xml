@@ -43,7 +43,10 @@
             android:label="@string/title_activity_settings" />
         <activity android:name=".application.LessonInfoActivity" />
         <activity android:name=".application.ManagerActivity" />
-        <activity android:name=".application.CreateLessonActivity"></activity>
+        <activity android:name=".application.CreateLessonActivity" />
+        <activity android:name=".application.DeleteActivity"
+            android:label="@string/delete"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>
