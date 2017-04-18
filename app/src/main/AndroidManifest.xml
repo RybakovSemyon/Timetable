@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.rybakovsemyon.timetableproject">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/test_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Timetable.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+
+        <activity
+            android:name=".application.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".application.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".application.ChooseActivity" />
+        <activity android:name=".application.TeacherActivity" />
+        <activity android:name=".application.AuditoryActivity" />
+        <activity android:name=".application.GroupActivity" />
+        <activity android:name=".application.BuildingActivity" />
+        <activity android:name=".application.FacultyActivity" />
+        <activity
+            android:name=".application.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".application.LessonInfoActivity" />
+        <activity android:name=".application.ManagerActivity" />
+        <activity android:name=".application.CreateLessonActivity"></activity>
+    </application>
+
+</manifest>

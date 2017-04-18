@@ -1,0 +1,144 @@
+<resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">Расписание ТГУ</string>
+    <string name="btn_faculty">Расписание групп</string>
+    <string name="btn_teacher">Расписание преподавателей</string>
+    <string name="btn_auditory">Расписание аудиторий</string>
+    <string name="lbl_info_choose">Выберите тип расписания</string>
+    <string name="not_loaded">Не загружено</string>
+    <string name="start_downloaded">Идёт загрузка</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="infoTeacher">Начните вводить ФИО…</string>
+    <string name="infoAuditory">Начните вводить номер…</string>
+    <string name="title_activity_test_main">TestMainActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="weekend">Сегодня занятий нет</string>
+    <string name="task">ЗАДАНИЯ</string>
+    <string name="create_task">Добавить задание</string>
+    <string name="date_start_end">Период занятий:</string>
+    <string name="info_teacher">(Преподаватель)</string>
+    <string name="info_auditory">(Аудитория)</string>
+    <string name="info_group">(Группа)</string>
+    <string name="cl_type">Тип:</string>
+    <string name="cl_subject">Название предмета:</string>
+    <string name="cl_ed_subject">Введите название</string>
+    <string name="cl_start">Начало занятия:</string>
+    <string name="cl_period1">"Период: с"</string>
+    <string name="cl_period2">"по"</string>
+    <string name="cl_infoTeacher">Преподаватель:</string>
+    <string name="cl_infoGroup">Группа:</string>
+    <string name="cl_infoAud">Аудитория:</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="add_element">Добавить занятие</string>
+    <string name="title_activity_create_lesson">CreateLessonActivity</string>
+    <string name="new_lesson">Добавить занятие</string>
+    <string name="edit_teacher">Введите ФИО</string>
+    <string name="edit_auditory">Введите аудиторию</string>
+    <string name="edit_group">Введите группу</string>
+    <string name="main_label1">Национальный исследовательский</string>
+    <string name="main_label2">Томский государственный университет</string>
+    <string name="nav_choose">Поиск расписания</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_schedule">Моё расписание</string>
+    <string name="nav_tittle">Сохранённые расписания</string>
+    <string name="nav_myschedule">Сохранённые</string>
+    <string name="info_manager2">Сохранённые расписания</string>
+    <string name="add_schedule">Добавить расписание</string>
+    <string name="delete_schedule">Удалить выбранное расписание</string>
+    <string name="important_schedule">Сделать выбранное расписание основным</string>
+    <string name="info_manager1">У вас нет сохранённых расписаний\nНажмите на кнопку\n<b>\"Добавить расписание\"</b></string>
+    <string name="info_manager3">Выберите основное расписание</string>
+    <string-array name="timesStart">
+        <item>08:45</item>
+        <item>10:35</item>
+        <item>12:25</item>
+        <item>14:45</item>
+        <item>16:35</item>
+        <item>18:25</item>
+        <item>20:15</item>
+    </string-array>
+    <string-array name="timesEnd">
+        <item>10:20</item>
+        <item>12:10</item>
+        <item>14:00</item>
+        <item>16:20</item>
+        <item>18:10</item>
+        <item>20:00</item>
+        <item>21:50</item>
+    </string-array>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+</resources>
