@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,6 +26,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -317,7 +322,7 @@ public class HomeActivity extends AppCompatActivity
         @Override
         public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_home, container, false);
             int position = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
             Day day = new Day();
             boolean t = false;
@@ -337,7 +342,7 @@ public class HomeActivity extends AppCompatActivity
             }
             if (t){
                 ArrayList<Lesson> all_lessons = day.getLessons();
-                ArrayList<Lesson> concrete_lessons = new ArrayList<>();
+                final ArrayList<Lesson> concrete_lessons = new ArrayList<>();
                 try {
                     for (i = 0; i < all_lessons.size(); i++){
                         Lesson lesson = all_lessons.get(i);
@@ -376,6 +381,11 @@ public class HomeActivity extends AppCompatActivity
                             String[] info = (String[]) tPlace.getTag(); //length info = 13
                             Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
                             intent.putExtra("data",info);
+                            if (TEST){
+                                intent.putExtra("test", "true");
+                            } else {
+                                intent.putExtra("test","net");
+                            }
                             intent.putExtra("day_of_week", DayOfWeekINString(1, DAY_OF_WEEK-1));
                             startActivity(intent);
                         }
@@ -393,30 +403,6 @@ public class HomeActivity extends AppCompatActivity
                         }
                     });
                 }
-            }
-            Button add_element = (Button) rootView.findViewById(R.id.add_element);
-            if (!TEST){
-
-                add_element.setVisibility(View.VISIBLE);
-                add_element.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), CreateLessonActivity.class);
-                        String wd = Integer.toString(DAY_OF_WEEK-1);
-                        intent.putExtra("type", type);
-                        intent.putExtra("weekday", wd);
-                        Date mind = minDate.getTime();
-                        String minds = formatter.format(mind);
-                        Date maxd = maxDate.getTime();
-                        String maxds = formatter.format(maxd);
-                        intent.putExtra("name", nameSchedule);
-                        intent.putExtra("min_day", minds);
-                        intent.putExtra("max_day", maxds);
-                        startActivity(intent);
-                    }
-                });
-            } else {
-                add_element.setVisibility(View.GONE);
             }
             return rootView;
         }
@@ -769,7 +755,7 @@ public class HomeActivity extends AppCompatActivity
         new ProgressTask().execute();
     }
 
-    private void DrawingTimetable (int check){
+    private void DrawingTimetable(int check){
         ProgressBar pbar = (ProgressBar) findViewById(R.id.pb_home);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.c_home);
         PagerTabStrip ptab = (PagerTabStrip) findViewById(R.id.pts_home);
@@ -803,11 +789,34 @@ public class HomeActivity extends AppCompatActivity
         if (TEST) {
 
             fab.setVisibility(View.VISIBLE);
+            fab.setImageResource(R.drawable.ic_file_download_white_24px);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     WORK = 1;
                     new ProgressTask().execute();
+                }
+            });
+        } else {
+            fab.setImageResource(R.drawable.ic_add_white_24px);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, CreateLessonActivity.class);
+                    String wd = Integer.toString(DAY_OF_WEEK-1);
+                    intent.putExtra("type", type);
+                    intent.putExtra("weekday", wd);
+                    Date mind = minDate.getTime();
+                    String minds = formatter.format(mind);
+                    Date maxd = maxDate.getTime();
+                    String maxds = formatter.format(maxd);
+                    String _id = String.valueOf(db_id);
+                    intent.putExtra("name", nameSchedule);
+                    intent.putExtra("db_id", _id);
+                    intent.putExtra("min_day", minds);
+                    intent.putExtra("max_day", maxds);
+                    startActivity(intent);
                 }
             });
         }

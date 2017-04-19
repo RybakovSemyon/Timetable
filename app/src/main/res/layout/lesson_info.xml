@@ -27,10 +27,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
         android:text="@string/task"
         android:textColor="@color/black"
         android:textSize="15sp"
@@ -51,7 +51,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:id="@+id/linearLayout3" />
+        android:id="@+id/tasks_line" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -86,7 +86,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="15sp"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:layout_marginBottom="4dp" />
 
         <TextView
             android:id="@+id/lesson_info1"
@@ -114,8 +115,28 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/tasks_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/create_tasks"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tasks_line">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
     <Button
-        android:id="@+id/create_task"
+        android:id="@+id/create_tasks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -123,19 +144,13 @@
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:text="@string/create_task"
+        android:textAllCaps="false"
+        android:background="@drawable/item_home_selector"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp" />
-
-    <ListView
-        android:layout_width="0dp"
-        android:layout_height="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        android:layout_marginTop="8dp" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -7,6 +7,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ru.rybakovsemyon.timetableproject.R;
@@ -18,12 +20,24 @@ public class LessonInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lesson_info);
         Intent putIntent = getIntent();
+        Button btn_add = (Button) findViewById(R.id.create_tasks);
         final String[] data = putIntent.getStringArrayExtra("data");
         String day_of_week = putIntent.getStringExtra("day_of_week");
         if (day_of_week == null){
             Intent chooseIntent = new Intent(this, ChooseActivity.class);
             startActivity(chooseIntent);
             finish();
+        }
+        String TEST = putIntent.getStringExtra("test");
+        System.out.println(TEST + "KAK TAK?");
+        if (TEST.equalsIgnoreCase("true")) {
+            TextView tasks = (TextView) findViewById(R.id.text_task);
+            tasks.setVisibility(View.GONE);
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.tasks_layout);
+            linearLayout.setVisibility(View.GONE);
+            LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.tasks_line);
+            linearLayout1.setVisibility(View.GONE);
+            btn_add.setVisibility(View.GONE);
         }
         /*
             Какой индекс за что отвечает:
@@ -40,7 +54,8 @@ public class LessonInfoActivity extends AppCompatActivity {
             10 - тип занятия
             11 - дата начала
             12 - дата конца
-            Итого 13 объектов
+            13 id
+            Итого 14 объектов
          */
         TextView lesson_week = (TextView)findViewById(R.id.lesson_infoTime);
         lesson_week.setText(day_of_week+", "+data[8]);
