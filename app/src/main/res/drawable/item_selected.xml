@@ -2,38 +2,34 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true" >
         <shape>
-            <gradient
-                android:startColor="@color/light_blue"
-                android:endColor="@color/background_items"
-                android:angle="270" />
+            <solid
+                android:color="@color/light_blue" />
             <stroke
-                android:width="1dp"
-                android:color="@color/back_fone" />
+                android:width="3dp"
+                android:color="@color/font_end" />
             <corners
                 android:radius="10dp" />
-            <!--<padding-->
-            <!--android:left="5dp"-->
-            <!--android:top="5dp"-->
-            <!--android:right="5dp"-->
-            <!--android:bottom="5dp" />-->
+            <padding
+                android:left="5dp"
+                android:top="5dp"
+                android:right="5dp"
+                android:bottom="5dp" />
         </shape>
     </item>
     <item>
         <shape>
-            <gradient
-                android:startColor="@color/light_blue"
-                android:endColor="@color/background_items"
-                android:angle="270" />
+            <solid
+                android:color="#F3F6F6"/>
             <stroke
-                android:width="1dp"
-                android:color="@color/back_fone" />
+                android:width="3dp"
+                android:color="#ff0000" />
             <corners
                 android:radius="10dp" />
-            <!--<padding-->
-            <!--android:left="5dp"-->
-            <!--android:top="5dp"-->
-            <!--android:right="5dp"-->
-            <!--android:bottom="5dp" />-->
+            <padding
+                android:left="5dp"
+                android:top="5dp"
+                android:right="5dp"
+                android:bottom="5dp" />
         </shape>
     </item>
 </selector>

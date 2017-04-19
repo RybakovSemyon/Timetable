@@ -1,11 +1,13 @@
 package ru.rybakovsemyon.timetableproject.application;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -80,6 +82,7 @@ public class HomeActivity extends AppCompatActivity
     int begin_position;
     static int DAY_OF_WEEK;
     long db_id;
+    long dday_id;
     ArrayList<Integer> itemsID = new ArrayList<>();
     ArrayList<String> itemsTYPE = new ArrayList<>();
     ArrayList<String> itemsNAME = new ArrayList<>();
@@ -170,22 +173,11 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
         }
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Menu menu = navigationView.getMenu();
@@ -209,26 +201,9 @@ public class HomeActivity extends AppCompatActivity
                         sub.add(0, _id, Menu.NONE, all.get(i).name).setIcon(R.drawable.guru_48);
                         break;
                 }
-
             }
         }
-//        for (int i = 0; i < itemsID.size(); i++){
-//            MenuItem menuItem = (MenuItem) findViewById(itemsID.get(i));
-//            final String temp_type = itemsTYPE.get(i);
-//            final String temp_id = Integer.toString(itemsID.get(i));
-//            menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                @Override
-//                public boolean onMenuItemClick(MenuItem item) {
-//                    Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-//                    intent.putExtra("type", temp_type);
-//                    intent.putExtra("db_id", temp_id);
-//                    startActivity(intent);
-//                    return true;
-//                }
-//            });
-//        }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -296,14 +271,11 @@ public class HomeActivity extends AppCompatActivity
                 DrawingTimetable(1);
             }
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-
-    //-----------! Fragment
     public static class PlaceholderFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -352,15 +324,12 @@ public class HomeActivity extends AppCompatActivity
                         compare.setTime(formatter.parse(s));
                         if (compare.after(date_start) && compare.before(date_end)){
                             concrete_lessons.add(lesson);
-                            //получил неотсортированные занятия в определенный день
-                            //занятия могут пропасть, поэтому ниже будет проверка на пустоту
                         }
                     }
                 } catch (ParseException e){
                     e.printStackTrace();
                 }
                 if (concrete_lessons.size() != 0) {
-                    //теперь отсортируем, а потом передадим адаптеру
                     Collections.sort(concrete_lessons, new Comparator<Lesson>() {
                         @Override
                         public int compare(Lesson o1, Lesson o2) {
@@ -369,7 +338,7 @@ public class HomeActivity extends AppCompatActivity
                     });
                     TextView textView = (TextView) rootView.findViewById(R.id.weekend);
                     textView.setVisibility(View.GONE);
-                    HomeAdapter timetableListAdapter = new HomeAdapter(rootView.getContext(),
+                    final HomeAdapter timetableListAdapter = new HomeAdapter(rootView.getContext(),
                             concrete_lessons, nameSchedule, type);
                     ListView listView = (ListView) rootView.findViewById(R.id.listviewTIMETABLE);
                     listView.setAdapter(timetableListAdapter);
@@ -377,8 +346,7 @@ public class HomeActivity extends AppCompatActivity
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             TextView tPlace = (TextView)view.findViewById(R.id.text_place); //
-                            //вытащим данные из элемента, которые засунули в тэг одного из textView
-                            String[] info = (String[]) tPlace.getTag(); //length info = 13
+                            String[] info = (String[]) tPlace.getTag(); //length info = 14
                             Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
                             intent.putExtra("data",info);
                             if (TEST){
@@ -392,9 +360,8 @@ public class HomeActivity extends AppCompatActivity
                     });
                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                         @Override
-                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                            TextView tPlace = (TextView)view.findViewById(R.id.text_place); //
-                            //вытащим данные из элемента, которые засунули в тэг одного из textView
+                        public boolean onItemLongClick(AdapterView<?> parent, final View view, final int position, long id) {
+                            TextView tPlace = (TextView)view.findViewById(R.id.text_place);
                             String[] info = (String[]) tPlace.getTag();
                             Intent intent = new Intent(getActivity(), DeleteActivity.class);
                             intent.putExtra("_id", info[13]);
@@ -517,6 +484,7 @@ public class HomeActivity extends AppCompatActivity
                                 DLesson dLesson = new DLesson();
                                 dLesson.subject = lesson.getSubject();
                                 dLesson.dday = dday;
+                                dLesson.synthetic = 0;
                                 dLesson.dates = lesson.getDates().toString();
                                 dLesson.dateStart = lesson.getDateStartString();
                                 dLesson.dateEnd = lesson.getDateEndString();
@@ -606,128 +574,135 @@ public class HomeActivity extends AppCompatActivity
                     }
                     break;
                 case 2: //DBmodel to Model
-                    List<DDay> dDays = new Select().from(DDay.class).where("DTimetable = ?", db_id).execute();
-                    ArrayList<Day> temp = new ArrayList<>();
-                    for (int i = 0; i < dDays.size(); i++){
-                        Day day = new Day();
-                        day.setWeekday(dDays.get(i).weekday);
-                        ArrayList<Lesson> lessons = new ArrayList<>();
-                        List<DLesson> dLessons = new Select().from(DLesson.class).where("DDay = ?", dDays.get(i).getId()).execute();
-                        for (int j = 0; j < dLessons.size(); j++){
-                            switch (type){
-                                case "group":
-                                    Lesson glesson = new Lesson();
-                                    glesson.setClusterId(dLessons.get(j).clusterId);
-                                    glesson.setClusterName(dLessons.get(j).clusterName);
-                                    glesson.setClusterType(dLessons.get(j).clusterType);
-                                    glesson.setDateEnd(dLessons.get(j).dateEnd);
-                                    glesson.setDateStart(dLessons.get(j).dateStart);
-                                    glesson.setDates(dLessons.get(j).dates);
-                                    glesson.setParity(dLessons.get(j).parity);
-                                    glesson.setSubject(dLessons.get(j).subject);
-                                    glesson.setTimeEnd(dLessons.get(j).timeEnd);
-                                    glesson.setTimeStart(dLessons.get(j).timeStart);
-                                    glesson.setType(dLessons.get(j).type);
-                                    glesson.setTemp_id(dLessons.get(j).getId());
-                                    ArrayList<Teacher> gteachers = new ArrayList<>();
-                                    List<DTeacher> dTeachers = new Select().from(DTeacher.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int k = 0; k < dTeachers.size(); k++){
-                                        Teacher gteacher = new Teacher();
-                                        gteacher.setTeacherId(dTeachers.get(k).teacherID);
-                                        gteacher.setTeacherName(dTeachers.get(k).teacherName);
-                                        gteachers.add(gteacher);
-                                    }
-                                    glesson.setTeachers(gteachers);
-                                    ArrayList<Auditory> gauditories = new ArrayList<>();
-                                    List<DAuditory> dAuditories = new Select().from(DAuditory.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int n = 0; n < dAuditories.size(); n++){
-                                        Auditory gauditory = new Auditory();
-                                        gauditory.setAuditoryAddress(dAuditories.get(n).auditoryAddress);
-                                        gauditory.setAuditoryId(dAuditories.get(n).auditoryID);
-                                        gauditory.setAuditoryName(dAuditories.get(n).auditoryName);
-                                        gauditories.add(gauditory);
-                                    }
-                                    glesson.setAuditories(gauditories);
-                                    lessons.add(glesson);
-                                    break;
-                                case "auditory":
-                                    Lesson alesson = new Lesson();
-                                    alesson.setDateEnd(dLessons.get(j).dateEnd);
-                                    alesson.setDateStart(dLessons.get(j).dateStart);
-                                    alesson.setDates(dLessons.get(j).dates);
-                                    alesson.setParity(dLessons.get(j).parity);
-                                    alesson.setSubject(dLessons.get(j).subject);
-                                    alesson.setTimeEnd(dLessons.get(j).timeEnd);
-                                    alesson.setTimeStart(dLessons.get(j).timeStart);
-                                    alesson.setType(dLessons.get(j).type);
-                                    alesson.setTemp_id(dLessons.get(j).getId());
-                                    ArrayList<Teacher> ateachers = new ArrayList<>();
-                                    List<DTeacher> aTeachers = new Select().from(DTeacher.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int k = 0; k < aTeachers.size(); k++){
-                                        Teacher ateacher = new Teacher();
-                                        ateacher.setTeacherId(aTeachers.get(k).teacherID);
-                                        ateacher.setTeacherName(aTeachers.get(k).teacherName);
-                                        ateachers.add(ateacher);
-                                    }
-                                    alesson.setTeachers(ateachers);
-                                    ArrayList<Group> agroups = new ArrayList<>();
-                                    List<DGroup> dGroups = new Select().from(DGroup.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int n = 0; n < dGroups.size(); n++){
-                                        Group group = new Group();
-                                        group.setGroupId(dGroups.get(n).groupID);
-                                        group.setGroupName(dGroups.get(n).groupName);
-                                        group.setGroupType(dGroups.get(n).groupType);
-                                        agroups.add(group);
-                                    }
-                                    alesson.setGroups(agroups);
-                                    lessons.add(alesson);
-                                    break;
-                                case "teacher":
-                                    Lesson tlesson = new Lesson();
-                                    tlesson.setDateEnd(dLessons.get(j).dateEnd);
-                                    tlesson.setDateStart(dLessons.get(j).dateStart);
-                                    tlesson.setDates(dLessons.get(j).dates);
-                                    tlesson.setParity(dLessons.get(j).parity);
-                                    tlesson.setSubject(dLessons.get(j).subject);
-                                    tlesson.setTimeEnd(dLessons.get(j).timeEnd);
-                                    tlesson.setTimeStart(dLessons.get(j).timeStart);
-                                    tlesson.setType(dLessons.get(j).type);
-                                    tlesson.setTemp_id(dLessons.get(j).getId());
-                                    ArrayList<Group> tgroups = new ArrayList<>();
-                                    List<DGroup> dtGroups = new Select().from(DGroup.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int n = 0; n < dtGroups.size(); n++){
-                                        Group group = new Group();
-                                        group.setGroupId(dtGroups.get(n).groupID);
-                                        group.setGroupName(dtGroups.get(n).groupName);
-                                        group.setGroupType(dtGroups.get(n).groupType);
-                                        tgroups.add(group);
-                                    }
-                                    tlesson.setGroups(tgroups);
-                                    ArrayList<Auditory> tauditories = new ArrayList<>();
-                                    List<DAuditory> dtAuditories = new Select().from(DAuditory.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
-                                    for (int n = 0; n < dtAuditories.size(); n++){
-                                        Auditory gauditory = new Auditory();
-                                        gauditory.setAuditoryAddress(dtAuditories.get(n).auditoryAddress);
-                                        gauditory.setAuditoryId(dtAuditories.get(n).auditoryID);
-                                        gauditory.setAuditoryName(dtAuditories.get(n).auditoryName);
-                                        tauditories.add(gauditory);
-                                    }
-                                    tlesson.setAuditories(tauditories);
-                                    lessons.add(tlesson);
-                                    break;
-                                default:
-                                    break;
+                    ActiveAndroid.beginTransaction();
+                    try {
+                        List<DDay> dDays = new Select().from(DDay.class).where("DTimetable = ?", db_id).execute();
+                        ArrayList<Day> temp = new ArrayList<>();
+                        for (int i = 0; i < dDays.size(); i++) {
+                            Day day = new Day();
+                            day.setWeekday(dDays.get(i).weekday);
+                            ArrayList<Lesson> lessons = new ArrayList<>();
+                            List<DLesson> dLessons = new Select().from(DLesson.class).where("DDay = ?", dDays.get(i).getId()).execute();
+                            for (int j = 0; j < dLessons.size(); j++) {
+                                switch (type) {
+                                    case "group":
+                                        Lesson glesson = new Lesson();
+                                        glesson.setSynthetic(dLessons.get(j).synthetic);
+                                        glesson.setClusterId(dLessons.get(j).clusterId);
+                                        glesson.setClusterName(dLessons.get(j).clusterName);
+                                        glesson.setClusterType(dLessons.get(j).clusterType);
+                                        glesson.setDateEnd(dLessons.get(j).dateEnd);
+                                        glesson.setDateStart(dLessons.get(j).dateStart);
+                                        glesson.setDday(dLessons.get(j).dday.getId());
+                                        glesson.setDates(dLessons.get(j).dates);
+                                        glesson.setParity(dLessons.get(j).parity);
+                                        glesson.setSubject(dLessons.get(j).subject);
+                                        glesson.setTimeEnd(dLessons.get(j).timeEnd);
+                                        glesson.setTimeStart(dLessons.get(j).timeStart);
+                                        glesson.setType(dLessons.get(j).type);
+                                        glesson.setTemp_id(dLessons.get(j).getId());
+                                        ArrayList<Teacher> gteachers = new ArrayList<>();
+                                        List<DTeacher> dTeachers = new Select().from(DTeacher.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int k = 0; k < dTeachers.size(); k++) {
+                                            Teacher gteacher = new Teacher();
+                                            gteacher.setTeacherId(dTeachers.get(k).teacherID);
+                                            gteacher.setTeacherName(dTeachers.get(k).teacherName);
+                                            gteachers.add(gteacher);
+                                        }
+                                        glesson.setTeachers(gteachers);
+                                        ArrayList<Auditory> gauditories = new ArrayList<>();
+                                        List<DAuditory> dAuditories = new Select().from(DAuditory.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int n = 0; n < dAuditories.size(); n++) {
+                                            Auditory gauditory = new Auditory();
+                                            gauditory.setAuditoryAddress(dAuditories.get(n).auditoryAddress);
+                                            gauditory.setAuditoryId(dAuditories.get(n).auditoryID);
+                                            gauditory.setAuditoryName(dAuditories.get(n).auditoryName);
+                                            gauditories.add(gauditory);
+                                        }
+                                        glesson.setAuditories(gauditories);
+                                        lessons.add(glesson);
+                                        break;
+                                    case "auditory":
+                                        Lesson alesson = new Lesson();
+                                        alesson.setDateEnd(dLessons.get(j).dateEnd);
+                                        alesson.setSynthetic(dLessons.get(j).synthetic);
+                                        alesson.setDateStart(dLessons.get(j).dateStart);
+                                        alesson.setDates(dLessons.get(j).dates);
+                                        alesson.setParity(dLessons.get(j).parity);
+                                        alesson.setSubject(dLessons.get(j).subject);
+                                        alesson.setTimeEnd(dLessons.get(j).timeEnd);
+                                        alesson.setTimeStart(dLessons.get(j).timeStart);
+                                        alesson.setType(dLessons.get(j).type);
+                                        alesson.setTemp_id(dLessons.get(j).getId());
+                                        ArrayList<Teacher> ateachers = new ArrayList<>();
+                                        List<DTeacher> aTeachers = new Select().from(DTeacher.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int k = 0; k < aTeachers.size(); k++) {
+                                            Teacher ateacher = new Teacher();
+                                            ateacher.setTeacherId(aTeachers.get(k).teacherID);
+                                            ateacher.setTeacherName(aTeachers.get(k).teacherName);
+                                            ateachers.add(ateacher);
+                                        }
+                                        alesson.setTeachers(ateachers);
+                                        ArrayList<Group> agroups = new ArrayList<>();
+                                        List<DGroup> dGroups = new Select().from(DGroup.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int n = 0; n < dGroups.size(); n++) {
+                                            Group group = new Group();
+                                            group.setGroupId(dGroups.get(n).groupID);
+                                            group.setGroupName(dGroups.get(n).groupName);
+                                            group.setGroupType(dGroups.get(n).groupType);
+                                            agroups.add(group);
+                                        }
+                                        alesson.setGroups(agroups);
+                                        lessons.add(alesson);
+                                        break;
+                                    case "teacher":
+                                        Lesson tlesson = new Lesson();
+                                        tlesson.setDateEnd(dLessons.get(j).dateEnd);
+                                        tlesson.setSynthetic(dLessons.get(j).synthetic);
+                                        tlesson.setDateStart(dLessons.get(j).dateStart);
+                                        tlesson.setDates(dLessons.get(j).dates);
+                                        tlesson.setParity(dLessons.get(j).parity);
+                                        tlesson.setSubject(dLessons.get(j).subject);
+                                        tlesson.setTimeEnd(dLessons.get(j).timeEnd);
+                                        tlesson.setTimeStart(dLessons.get(j).timeStart);
+                                        tlesson.setType(dLessons.get(j).type);
+                                        tlesson.setTemp_id(dLessons.get(j).getId());
+                                        ArrayList<Group> tgroups = new ArrayList<>();
+                                        List<DGroup> dtGroups = new Select().from(DGroup.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int n = 0; n < dtGroups.size(); n++) {
+                                            Group group = new Group();
+                                            group.setGroupId(dtGroups.get(n).groupID);
+                                            group.setGroupName(dtGroups.get(n).groupName);
+                                            group.setGroupType(dtGroups.get(n).groupType);
+                                            tgroups.add(group);
+                                        }
+                                        tlesson.setGroups(tgroups);
+                                        ArrayList<Auditory> tauditories = new ArrayList<>();
+                                        List<DAuditory> dtAuditories = new Select().from(DAuditory.class).where("DLesson = ?", dLessons.get(j).getId()).execute();
+                                        for (int n = 0; n < dtAuditories.size(); n++) {
+                                            Auditory gauditory = new Auditory();
+                                            gauditory.setAuditoryAddress(dtAuditories.get(n).auditoryAddress);
+                                            gauditory.setAuditoryId(dtAuditories.get(n).auditoryID);
+                                            gauditory.setAuditoryName(dtAuditories.get(n).auditoryName);
+                                            tauditories.add(gauditory);
+                                        }
+                                        tlesson.setAuditories(tauditories);
+                                        lessons.add(tlesson);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
+                            day.setLessons(lessons);
+                            temp.add(day);
                         }
-                        day.setLessons(lessons);
-                        temp.add(day);
+                        dayList = temp;
+                        ActiveAndroid.setTransactionSuccessful();
+                    } finally {
+                        ActiveAndroid.endTransaction();
                     }
-                    dayList = temp;
                     break;
-
-
             }
-
             return null;
         }
 
@@ -772,22 +747,12 @@ public class HomeActivity extends AppCompatActivity
         }
         mViewPager.setVisibility(View.VISIBLE);
         ptab.setVisibility(View.VISIBLE);
-//        TextView name = (TextView) findViewById(R.id.name_schedule);
-//        name.setText(nameSchedule);
         pbar.setVisibility(View.GONE);
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         getSupportActionBar().setTitle(nameSchedule);
-
-//        mViewPager.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mViewPager.setCurrentItem(begin_position);
-//            }
-//        });
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(begin_position);
         if (TEST) {
-
             fab.setVisibility(View.VISIBLE);
             fab.setImageResource(R.drawable.ic_file_download_white_24px);
             fab.setOnClickListener(new View.OnClickListener() {

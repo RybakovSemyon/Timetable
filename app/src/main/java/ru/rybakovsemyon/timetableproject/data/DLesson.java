@@ -10,6 +10,9 @@ public class DLesson extends Model {
     @Column(name = "Subject")
     public String subject;
 
+    @Column(name = "Synthetic")
+    public int synthetic;
+
     @Column(name = "Type")
     public String type;
 

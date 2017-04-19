@@ -18,6 +18,15 @@
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="ru.rybakovsemyon.timetableproject.data.DTimetable,
+                            ru.rybakovsemyon.timetableproject.data.DDay,
+                            ru.rybakovsemyon.timetableproject.data.DLesson,
+                            ru.rybakovsemyon.timetableproject.data.DAuditory,
+                            ru.rybakovsemyon.timetableproject.data.DGroup,
+                            ru.rybakovsemyon.timetableproject.data.DTeacher,
+                            ru.rybakovsemyon.timetableproject.data.DTask"/>
 
         <activity
             android:name=".application.SplashActivity"

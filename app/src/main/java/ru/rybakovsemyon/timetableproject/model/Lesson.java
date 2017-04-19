@@ -55,8 +55,17 @@ public class Lesson {
     @Expose
     private ArrayList<Group> groups = null;
 
+    private long dday = -1;
+
     private long temp_id = -1;
 
+    private int synthetic = 0;
+
+    public int getSyntetic() { return synthetic; }
+    public void setSynthetic(int synthetic) { this.synthetic = synthetic;}
+
+    public long getDday() { return dday; }
+    public void setDday(long dday) { this.dday = dday;}
     public long getTemp_id(){
         return temp_id;
     }

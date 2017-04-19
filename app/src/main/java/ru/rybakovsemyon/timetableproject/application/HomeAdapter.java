@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -60,7 +61,7 @@ class HomeAdapter extends BaseAdapter {
         TextView tType = (TextView) view.findViewById(R.id.text_type);
         TextView tSubject = (TextView)view.findViewById(R.id.text_lesson); //
         TextView tPlace = (TextView)view.findViewById(R.id.text_place); //
-        String[] tags = new String[14];
+        String[] tags = new String[16];
         switch (type){
             case "auditory":
                 tags[0] = nameSchedule;
@@ -99,18 +100,24 @@ class HomeAdapter extends BaseAdapter {
         tags[11] = l.getDateStartString();
         tags[12] = l.getDateEndString();
         tags[13] = String.valueOf(l.getTemp_id());
+        tags[14] = String.valueOf(l.getDday());
+        tags[15] = String.valueOf(l.getSyntetic());
         switch (tags[10]){
             case "0": //practic
                 tags[10] = "Практика";
+                tType.setTextColor(Color.parseColor("#296d90"));
                 break;
             case "1": //lab?
                 tags[10] = "Лаборатория";
+                tType.setTextColor(Color.parseColor("#2ec4e4"));
                 break;
             case "2": //lection
                 tags[10] = "Лекция";
+                tType.setTextColor(Color.parseColor("#ff0000"));
                 break;
             case "3": //seminar
                 tags[10] = "Семинар";
+                tType.setTextColor(Color.parseColor("#ffa200"));
                 break;
         }
         tTeacher.setText(tags[3]);
