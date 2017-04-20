@@ -31,7 +31,8 @@
         <activity
             android:name=".application.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,20 +41,32 @@
         </activity>
         <activity
             android:name=".application.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".application.ChooseActivity" />
-        <activity android:name=".application.TeacherActivity" />
-        <activity android:name=".application.AuditoryActivity" />
-        <activity android:name=".application.GroupActivity" />
-        <activity android:name=".application.BuildingActivity" />
-        <activity android:name=".application.FacultyActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.ChooseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.TeacherActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.AuditoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.GroupActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.BuildingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.FacultyActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".application.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:name=".application.LessonInfoActivity" />
-        <activity android:name=".application.ManagerActivity" />
-        <activity android:name=".application.CreateLessonActivity" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.LessonInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.ManagerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".application.CreateLessonActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".application.DeleteActivity"
+            android:screenOrientation="portrait"
             android:label="@string/delete"
             android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>

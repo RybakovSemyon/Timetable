@@ -17,4 +17,6 @@
     <color name="light_blue">#0077bb</color>
     <color name="background_fragment">#E8EDEC</color>
     <color name="background_items">#ceeef5</color>
+    <color name="windowBackground">#370903</color>
+    <color name="textColor">#F0E68C</color>
 </resources>

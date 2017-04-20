@@ -9,14 +9,12 @@
     <string name="lbl_info_choose">Выберите тип расписания</string>
     <string name="not_loaded">Не загружено</string>
     <string name="start_downloaded">Идёт загрузка</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="infoTeacher">Начните вводить ФИО…</string>
     <string name="infoAuditory">Начните вводить номер…</string>
-    <string name="title_activity_test_main">TestMainActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
     <string name="weekend">Сегодня занятий нет</string>
     <string name="task">ЗАДАНИЯ</string>
     <string name="create_task">Добавить задание</string>
+    <string name="create_lesson">Добавить занятие</string>
     <string name="date_start_end">Период занятий:</string>
     <string name="info_teacher">(Преподаватель)</string>
     <string name="info_auditory">(Аудитория)</string>
@@ -30,22 +28,15 @@
     <string name="cl_infoTeacher">Преподаватель:</string>
     <string name="cl_infoGroup">Группа:</string>
     <string name="cl_infoAud">Аудитория:</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="add_element">Добавить занятие</string>
-    <string name="title_activity_create_lesson">CreateLessonActivity</string>
-    <string name="new_lesson">Добавить занятие</string>
     <string name="edit_teacher">Введите ФИО</string>
     <string name="edit_auditory">Введите аудиторию</string>
     <string name="edit_group">Введите группу</string>
-    <string name="main_label1">Национальный исследовательский</string>
-    <string name="main_label2">Томский государственный университет</string>
     <string name="nav_choose">Поиск расписания</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_schedule">Моё расписание</string>
     <string name="nav_tittle">Сохранённые расписания</string>
     <string name="nav_myschedule">Сохранённые</string>
-    <string name="info_manager2">Сохранённые расписания</string>
-    <string name="add_schedule">Добавить расписание</string>
+    <string name="home">Домой</string>
     <string name="delete_schedule">Удалить</string>
     <string name="delete">Удаление</string>
     <string name="delete_tittle">Вы точно хотите удалить\n выбранный элемент?</string>
@@ -53,7 +44,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="important_schedule">Сделать основным</string>
-    <string name="info_manager1">У вас нет сохранённых расписаний\nНажмите на кнопку\n<b>\"Добавить расписание\"</b></string>
+    <string name="update">Обновить</string>
     <string-array name="timesStart">
         <item>08:45</item>
         <item>10:35</item>

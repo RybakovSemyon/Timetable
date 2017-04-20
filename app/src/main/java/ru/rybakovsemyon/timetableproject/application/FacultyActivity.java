@@ -10,6 +10,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,6 +72,12 @@ public class FacultyActivity extends AppCompatActivity {
         tView = (TextView)findViewById(R.id.textViewFACULTY);
         pBar.setVisibility(View.GONE);
         tView.setVisibility(View.GONE);
+        Collections.sort(facultyList, new Comparator<Faculty>() {
+            @Override
+            public int compare(Faculty o1, Faculty o2) {
+                return o1.getFacultyName().compareTo(o2.getFacultyName());
+            }
+        });
         ListView listView = (ListView)findViewById(R.id.listviewFACULTY);
         ArrayList<Object> objects = new ArrayList<>();
         objects.addAll(facultyList);

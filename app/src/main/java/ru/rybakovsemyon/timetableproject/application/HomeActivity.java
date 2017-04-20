@@ -1,22 +1,16 @@
 package ru.rybakovsemyon.timetableproject.application;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,9 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -80,13 +72,13 @@ public class HomeActivity extends AppCompatActivity
     Lessons ans = null;
     int days = 0;
     int begin_position;
+    int count_position;
     static int DAY_OF_WEEK;
     long db_id;
-    long dday_id;
+    int ANSWER = -1;
     ArrayList<Integer> itemsID = new ArrayList<>();
     ArrayList<String> itemsTYPE = new ArrayList<>();
     ArrayList<String> itemsNAME = new ArrayList<>();
-    static final private int CHOOSE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,8 +252,9 @@ public class HomeActivity extends AppCompatActivity
             }
         } else if (id == R.id.nav_schedules){
             Intent intent = new Intent(this, ManagerActivity.class);
-            startActivity(intent);
-            finish();
+            String p = String.valueOf(count_position-1);
+            intent.putExtra("position", p);
+            startActivityForResult(intent, 0);
         }
         for (int i = 0; i < itemsID.size(); i++){
             if (id == itemsID.get(i)){
@@ -365,7 +358,7 @@ public class HomeActivity extends AppCompatActivity
                             String[] info = (String[]) tPlace.getTag();
                             Intent intent = new Intent(getActivity(), DeleteActivity.class);
                             intent.putExtra("_id", info[13]);
-                            startActivityForResult(intent, CHOOSE);
+                            startActivityForResult(intent, 0);
                             return true;
                         }
                     });
@@ -382,6 +375,10 @@ public class HomeActivity extends AppCompatActivity
             String answer = data.getStringExtra("db_id");
             long _id = Long.parseLong(answer);
             new Delete().from(DLesson.class).where("Id = ?", _id).execute();
+            DrawingTimetable(1);
+        } else if (resultCode == 100){
+            String for_result = data.getStringExtra("position");
+            ANSWER = Integer.parseInt(for_result);
             DrawingTimetable(1);
         }
 
@@ -406,6 +403,7 @@ public class HomeActivity extends AppCompatActivity
         @Override
         public CharSequence getPageTitle(int position) {
             String s = getDayNow(position);
+            count_position = position;
             String s1;
             DAY_OF_WEEK = DayOfWeek(s);
             s1 = DayOfWeekINString(0, DAY_OF_WEEK);
@@ -726,6 +724,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void ToDBstart(){
+
         WORK = 0;
         new ProgressTask().execute();
     }
@@ -751,7 +750,14 @@ public class HomeActivity extends AppCompatActivity
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         getSupportActionBar().setTitle(nameSchedule);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(begin_position);
+        int i;
+        if (ANSWER == -1){
+            i = begin_position;
+        } else {
+            i = ANSWER;
+            ANSWER = -1;
+        }
+        mViewPager.setCurrentItem(i);
         if (TEST) {
             fab.setVisibility(View.VISIBLE);
             fab.setImageResource(R.drawable.ic_file_download_white_24px);
@@ -770,6 +776,9 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View v) {
                     Intent intent = new Intent(HomeActivity.this, CreateLessonActivity.class);
                     String wd = Integer.toString(DAY_OF_WEEK-1);
+                    if (DAY_OF_WEEK-1 == 0){
+                        wd = "7";
+                    }
                     intent.putExtra("type", type);
                     intent.putExtra("weekday", wd);
                     Date mind = minDate.getTime();
@@ -781,7 +790,9 @@ public class HomeActivity extends AppCompatActivity
                     intent.putExtra("db_id", _id);
                     intent.putExtra("min_day", minds);
                     intent.putExtra("max_day", maxds);
-                    startActivity(intent);
+                    String p = String.valueOf(count_position-1);
+                    intent.putExtra("position",p);
+                    startActivityForResult(intent, 0);
                 }
             });
         }

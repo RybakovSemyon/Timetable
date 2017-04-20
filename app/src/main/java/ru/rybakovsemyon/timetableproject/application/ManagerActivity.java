@@ -25,10 +25,14 @@ import ru.rybakovsemyon.timetableproject.data.DTimetable;
 
 public class ManagerActivity extends AppCompatActivity {
 
+    private String position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manager);
+        Intent intentGet = getIntent();
+        position = intentGet.getStringExtra("position");
         ActionBar actionBar = this.getSupportActionBar();
         Button btn_delete = (Button) findViewById(R.id.btn_delete);
         Button btn_important = (Button) findViewById(R.id.btn_important);
@@ -39,8 +43,6 @@ public class ManagerActivity extends AppCompatActivity {
             radioGroup.setVisibility(View.VISIBLE);
             btn_important.setVisibility(View.VISIBLE);
             btn_delete.setVisibility(View.VISIBLE);
-            TextView info_manager1 = (TextView) findViewById(R.id.info_manager1);
-            info_manager1.setVisibility(View.GONE);
             TextView info_manager2 = (TextView) findViewById(R.id.info_manager2);
             info_manager2.setVisibility(View.VISIBLE);
             for (int i = 0; i < all.size(); i++){
@@ -74,12 +76,10 @@ public class ManagerActivity extends AppCompatActivity {
                 radioGroup.addView(radioButton);
             }
         }
-        Button button = (Button) findViewById(R.id.aschedule);
+        Button button = (Button) findViewById(R.id.btn_home);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ManagerActivity.this, ChooseActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -155,8 +155,9 @@ public class ManagerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        setResult(100, intent);
         finish();
     }
 

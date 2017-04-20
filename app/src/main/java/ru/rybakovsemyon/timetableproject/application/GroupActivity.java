@@ -10,6 +10,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +71,12 @@ public class GroupActivity extends AppCompatActivity {
         tView = (TextView) findViewById(R.id.textViewGROUP);
         pBar.setVisibility(View.GONE);
         tView.setVisibility(View.GONE);
+        Collections.sort(groupList, new Comparator<Group>() {
+            @Override
+            public int compare(Group o1, Group o2) {
+                return o1.getGroupName().compareTo(o2.getGroupName());
+            }
+        });
         ListView listView = (ListView) findViewById(R.id.listviewGROUP);
         ArrayList<Object> objects = new ArrayList<>();
         objects.addAll(groupList);

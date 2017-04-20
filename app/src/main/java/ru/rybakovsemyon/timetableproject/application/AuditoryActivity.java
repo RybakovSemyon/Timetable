@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -68,6 +70,12 @@ public class AuditoryActivity extends AppCompatActivity {
     private void DrawingList() {
         ProgressBar pBar;
         TextView tView;
+        Collections.sort(auditoryList, new Comparator<Auditory>() {
+            @Override
+            public int compare(Auditory o1, Auditory o2) {
+                return o1.getAuditoryName().compareTo(o2.getAuditoryName());
+            }
+        });
         pBar = (ProgressBar) findViewById(R.id.progressBarAuditory);
         tView = (TextView) findViewById(R.id.textViewAuditory);
         pBar.setVisibility(View.GONE);

@@ -3,7 +3,6 @@ package ru.rybakovsemyon.timetableproject.application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,10 +10,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,18 +19,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import ru.rybakovsemyon.timetableproject.R;
 import ru.rybakovsemyon.timetableproject.data.DAuditory;
 import ru.rybakovsemyon.timetableproject.data.DDay;
 import ru.rybakovsemyon.timetableproject.data.DGroup;
 import ru.rybakovsemyon.timetableproject.data.DLesson;
 import ru.rybakovsemyon.timetableproject.data.DTeacher;
+import ru.rybakovsemyon.timetableproject.data.DTimetable;
 
 public class CreateLessonActivity extends AppCompatActivity {
 
     private int count = 0;
     int needWeekday = 0;
+    private String position = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +45,8 @@ public class CreateLessonActivity extends AppCompatActivity {
         final String type = intentGet.getStringExtra("type");
         final long db_id = Long.parseLong(intentGet.getStringExtra("db_id"));
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        position = intentGet.getStringExtra("position");
+        System.out.println(position);
         final Calendar minDate = GregorianCalendar.getInstance();
         final Calendar maxDate = GregorianCalendar.getInstance();
         ArrayList<String> dates = new ArrayList<>();
@@ -121,19 +121,29 @@ public class CreateLessonActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((edit_info1.getText().toString() == null) && (edit_info2.getText().toString() == null) && (edit_subject.getText().toString() == null)) {
+                if ((edit_info1.getText().toString().equals("")) && (edit_info2.getText().toString().equals("")) && (edit_subject.getText().toString().equals(""))) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Не все поля заполнены", Toast.LENGTH_SHORT);
                     toast.show();
                 } else if (minDate.before(maxDate)) {
                     Toast toast1 = Toast.makeText(getApplicationContext(), "Дата начала не может быть\nбольше даты конца", Toast.LENGTH_SHORT);
                     toast1.show();
                 } else {
+                    System.out.println("TEST else");
                     ActiveAndroid.beginTransaction();
                     try {
                         DLesson dLesson = new DLesson();
                         dLesson.subject = edit_subject.getText().toString();
                         List<DDay> dDayList = new Select().from(DDay.class).where("DTimetable = ? and Weekday = ?", db_id, needWeekday).execute();
-                        dLesson.dday = dDayList.get(0); //peredat'
+                        if (dDayList.size() == 0){
+                            DDay temp_dday = new DDay();
+                            temp_dday.weekday = needWeekday;
+                            List<DTimetable> temp_dt = new Select().from(DTimetable.class).where("Id = ?", db_id).execute();
+                            temp_dday.dtimetable = temp_dt.get(0);
+                            temp_dday.save();
+                            dLesson.dday = temp_dday;
+                        } else {
+                            dLesson.dday = dDayList.get(0); //peredat'
+                        }
                         dLesson.dates = "stub";
                         dLesson.dateStart = date_start.getSelectedItem().toString();
                         dLesson.dateEnd = date_end.getSelectedItem().toString();
@@ -163,7 +173,6 @@ public class CreateLessonActivity extends AppCompatActivity {
                         dLesson.clusterType = "stub";
                         dLesson.clusterId = "stub";
                         dLesson.save();
-                        System.out.println(type);
                         switch (type) {
                             case "teacher":
                                     DGroup dGroup = new DGroup();
@@ -210,10 +219,14 @@ public class CreateLessonActivity extends AppCompatActivity {
                         }
                     } finally {
                         ActiveAndroid.setTransactionSuccessful();
+                        System.out.println("transaction successful");
                     }
                     ActiveAndroid.endTransaction();
+                    Intent intent = new Intent();
+                    intent.putExtra("position", position);
+                    setResult(100, intent);
+                    finish();
                 }
-                System.out.println("ok____________________________________ok");
             }
                 });
             }
