@@ -38,5 +38,6 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:support-vector-drawable:24.2.1'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
     testCompile 'junit:junit:4.12'
 }

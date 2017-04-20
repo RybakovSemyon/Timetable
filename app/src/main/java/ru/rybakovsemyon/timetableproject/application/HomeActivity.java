@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,8 +63,8 @@ import ru.rybakovsemyon.timetableproject.model.TimetableAPI;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static String nameSchedule = "Расписание ТГУ";
-    static String type = null;
+    static String nameSchedule;
+    static String type;
     static Calendar maxDate = GregorianCalendar.getInstance();
     static SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
     static Calendar minDate = GregorianCalendar.getInstance();
@@ -86,6 +89,8 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        materialCalendarView.setVisibility(View.GONE);
         fab.setVisibility(View.GONE);
         TEST = true;
         setSupportActionBar(toolbar);
@@ -118,7 +123,6 @@ public class HomeActivity extends AppCompatActivity
             WORK = 2;
             new ProgressTask().execute();
         } else {
-
             TimetableAPI timetableAPI = TimetableAPI.retrofit.create(TimetableAPI.class);
             Call<Lessons> call = timetableAPI.getLessonsGroup(req_id);
             switch (type) {
@@ -209,15 +213,28 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.test_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        if (id == R.id.test_calendar) {
+            if (materialCalendarView.getVisibility() == View.VISIBLE) {
+                materialCalendarView.setVisibility(View.GONE);
+                ViewPager mViewPager = (ViewPager) findViewById(R.id.c_home);
+                mViewPager.setVisibility(View.VISIBLE);
+                FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+                floatingActionButton.setVisibility(View.VISIBLE);
+            } else {
+                materialCalendarView.setVisibility(View.VISIBLE);
+                ViewPager mViewPager = (ViewPager) findViewById(R.id.c_home);
+                mViewPager.setVisibility(View.GONE);
+                FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+                floatingActionButton.setVisibility(View.GONE);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -732,12 +749,16 @@ public class HomeActivity extends AppCompatActivity
     private void DrawingTimetable(int check){
         ProgressBar pbar = (ProgressBar) findViewById(R.id.pb_home);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.c_home);
+        TextView textView = (TextView) findViewById(R.id.download_info);
+        textView.setVisibility(View.GONE);
+        MaterialCalendarView materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
+        materialCalendarView.setVisibility(View.GONE);
         PagerTabStrip ptab = (PagerTabStrip) findViewById(R.id.pts_home);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (check == 1){
             fab.setVisibility(View.GONE);
             mViewPager.setVisibility(View.GONE);
-            pbar.setVisibility(View.GONE);
+            ptab.setVisibility(View.GONE);
             pbar.setVisibility(View.VISIBLE);
             getSupportActionBar().setTitle(R.string.app_name);
             WORK = 2;

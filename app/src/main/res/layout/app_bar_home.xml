@@ -20,6 +20,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:mcv_selectionColor="#00F"
+        app:mcv_showOtherDates="all" />
+
     <include layout="@layout/content_home" />
 
     <android.support.design.widget.FloatingActionButton
